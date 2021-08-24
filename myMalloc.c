@@ -196,8 +196,11 @@ static header * allocate_chunk(size_t size) {
  */
 static inline header * allocate_object(size_t raw_size) {
   // TODO implement allocation
-  //(void) raw_size;
-  raw_size += 1;
+  (void) raw_size;
+  size_t size = raw_size + ALLOC_HEADER_SIZE + 7;
+  size = size & (-8);
+  printf("raw is %d, rounded is %d", raw_size, size);
+
   assert(false);
   exit(1);
 
