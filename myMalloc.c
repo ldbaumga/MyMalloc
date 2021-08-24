@@ -199,7 +199,7 @@ static inline header * allocate_object(size_t raw_size) {
   (void) raw_size;
   size_t size = raw_size + ALLOC_HEADER_SIZE + 7;
   size = size & (-8);
-  printf("raw is %d, rounded is %d", raw_size, size);
+  printf("raw is %ld, rounded is %ld", raw_size, size);
 
   assert(false);
   exit(1);
