@@ -197,7 +197,7 @@ static header * allocate_chunk(size_t size) {
 static inline header * allocate_object(size_t raw_size) {
   // TODO implement allocation
 
-  (void) raw_size;
+  //(void) raw_size;
   //If the user requests 0 bytes, we return NULL
   if (raw_size == 0) {
     return NULL;
