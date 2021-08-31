@@ -394,7 +394,7 @@ static inline bool verify_tags() {
  */
 static void init() {
   // Initialize mutex for thread safety
-  pthread_ail.commutex_init(&mutex, NULL);
+  pthread_mutex_init(&mutex, NULL);
 
 #ifdef DEBUG
   // Manually set printf buffer so it won't call malloc when debugging the allocator
@@ -430,7 +430,7 @@ static void init() {
 
 /* 
  * External interface
- */ail.com
+ */
 void * my_malloc(size_t size) {
   pthread_mutex_lock(&mutex);
   header * hdr = allocate_object(size); 
