@@ -222,7 +222,10 @@ static inline header * allocate_object(size_t raw_size) {
   size_t alloc_size = actual_size - ALLOC_HEADER_SIZE;
 
   //Task 1.2
-  int index = min((alloc_size / 8) - 1, N_LISTS - 1);
+  int index = (alloc_size / 8) - 1;
+  if (index > N_LISTS - 1) {
+    index = N_LISTS - 1;
+  }
   header * freelist = &freelistSentinels[index];
 
   //Searches throught the freelist to find the first block that is greater than
