@@ -254,7 +254,7 @@ static inline header * allocate_object(size_t raw_size) {
     set_state(freelist, ALLOCATED);
     freelist->prev->next = freelist->next;
     freelist->next->prev = freelist->prev;
-    return freelist->data;
+    return (header *) freelist->data;
   } else {
     //Otherwise, we split the block
   }
