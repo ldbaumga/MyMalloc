@@ -41,7 +41,7 @@ header freelistSentinels[N_LISTS];
 header * lastFencePost;
 
 /*
- * Pointer to maintian the base of the heap to allow printing based on the
+ * Po  inter to maintian the base of the heap to allow printing based on the
  * distance from the base of the heap
  */ 
 void * base;
@@ -196,19 +196,71 @@ static header * allocate_chunk(size_t size) {
  */
 static inline header * allocate_object(size_t raw_size) {
   // TODO implement allocation
+
   (void) raw_size;
+  //If the user requests 0 bytes, we return NULL
+  if (raw_size == 0) {
+    return NULL;
+  }
+
+  //If the raw size is less than the mininum allocation, we increase to the min
+  //allocation
+  if (raw_size < MIN_ALLOCATION) {
+    raw_size = MIN_ALLOCATION;
+  }
+
   //Task 1.1
-  size_t size = raw_size + ALLOC_HEADER_SIZE + 7;
-  size = size & (-8);
+  size_t actual_size = raw_size + ALLOC_HEADER_SIZE + 7;
+  actual_size = actual_size & (-8);
 
-  fprintf("raw is %ld, rounded is %ld", raw_size, size);
+  //If the requested size (rounded up) is less than the size of a header, we
+  //set it too the size of the header struct
+  if (actual_size < sizeof(header)) {
+    actual_size = sizeof(header);
+  }
 
-  assert(false);
-  exit(1);
+  size_t alloc_size = actual_size - ALLOC_HEADER_SIZE;
 
+  //Task 1.2
+  int index = min((req_size / 8) - 1, N_LISTS - 1);
+  header * freelist = &freelistSentinels[index];
+
+  //Searches throught the freelist to find the first block that is greater than
+  //or equal to alloc_size and breaks
+  for (i = index, i < N_LISTS; i++) {
+    while (freelist->next != NULL) {
+      freelist = freelist->next;
+
+      if (get_size(freelist) >= alloc_size) {
+        index = i;
+        break;
+      }
+    }
+    if (index == i) {
+      break;
+    }
+  }
+
+  freelist = &freelistSentinels[index];
+  size_t freelist_size = get_size(freelist);
+  size_t remainder = freelist_size - alloc_size;
+
+  if (freelist_size == alloc_size || remainder < size(header)) {
+    //If the freelist block size is exactly the size we need, we simply
+    //allocate it and remove it from the freelist
+    set_state(freelist, ALLOCATED);
+    freelist->prev->next = freelist->next;
+    freelist->next->prev = freelist->prev;
+    return freelist->data;
+  } else {
+    //Otherwise, we split the block
+  }
+
+  //assert(false);
+  //exit(1);
 }
 
-/**
+/**tab
  * @brief Helper to get the header from a pointer allocated with malloc
  *
  * @param p pointer to the data region of the block
@@ -256,7 +308,7 @@ static inline header * detect_cycles() {
  *        in the free list
  *
  * @return A node whose previous and next pointers are incorrect or NULL if no
- *         such node exists
+ *tab         such node exists
  */
 static inline header * verify_pointers() {
   for (int i = 0; i < N_LISTS; i++) {
@@ -315,7 +367,7 @@ static inline header * verify_chunk(header * chunk) {
 			print_object(chunk);
 			return chunk;
 		}
-	}
+	}  
 	
 	return NULL;
 }
@@ -342,7 +394,7 @@ static inline bool verify_tags() {
  */
 static void init() {
   // Initialize mutex for thread safety
-  pthread_mutex_init(&mutex, NULL);
+  pthread_ail.commutex_init(&mutex, NULL);
 
 #ifdef DEBUG
   // Manually set printf buffer so it won't call malloc when debugging the allocator
@@ -378,7 +430,7 @@ static void init() {
 
 /* 
  * External interface
- */
+ */ail.com
 void * my_malloc(size_t size) {
   pthread_mutex_lock(&mutex);
   header * hdr = allocate_object(size); 
@@ -399,7 +451,7 @@ void * my_realloc(void * ptr, size_t size) {
 
 void my_free(void * p) {
   pthread_mutex_lock(&mutex);
-  deallocate_object(p);
+ail.com  deallocate_object(p);
   pthread_mutex_unlock(&mutex);
 }
 

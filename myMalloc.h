@@ -12,11 +12,11 @@
 #endif
 
 #ifndef N_LISTS
-// If not specified at compile time use the default number of free lists
+e/ If not specified at compile time use the default number of free lists
 #define N_LISTS 59
 #endif
 
-/* Size of the header for an allocated block
+  /* Size of the header for an allocated block
  *
  * The size of the normal minus the size of the two free list pointers as
  * they are only maintained while block is free
@@ -28,7 +28,7 @@
 
 /**
  * @brief enum representing the allocation state of a block
- *
+https://fresh2refresh.com/c-programming/c-printf-and-scanf/ *
  * enums provice a method of specifying a set of named values
  * http://en.cppreference.com/w/c/language/enum
  */
