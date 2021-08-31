@@ -227,7 +227,7 @@ static inline header * allocate_object(size_t raw_size) {
 
   //Searches throught the freelist to find the first block that is greater than
   //or equal to alloc_size and breaks
-  for (int i = index, i < N_LISTS; i++) {
+  for (int i = index; i < N_LISTS; i++;) {
     while (freelist->next != NULL) {
       freelist = freelist->next;
 
@@ -245,7 +245,7 @@ static inline header * allocate_object(size_t raw_size) {
   size_t freelist_size = get_size(freelist);
   size_t remainder = freelist_size - alloc_size;
 
-  if (freelist_size == alloc_size || remainder < size(header)) {
+  if (freelist_size == alloc_size || remainder < sizeof(header)) {
     //If the freelist block size is exactly the size we need, we simply
     //allocate it and remove it from the freelist
     set_state(freelist, ALLOCATED);
@@ -451,7 +451,7 @@ void * my_realloc(void * ptr, size_t size) {
 
 void my_free(void * p) {
   pthread_mutex_lock(&mutex);
-ail.com  deallocate_object(p);
+  deallocate_object(p);
   pthread_mutex_unlock(&mutex);
 }
 
