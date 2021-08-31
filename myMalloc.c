@@ -196,6 +196,7 @@ static header * allocate_chunk(size_t size) {
  */
 static inline header * allocate_object(size_t raw_size) {
   // TODO implement allocation
+  fprintf(stderr, "1");
 
   (void) raw_size;
   //If the user requests 0 bytes, we return NULL
@@ -220,6 +221,8 @@ static inline header * allocate_object(size_t raw_size) {
   }
 
   size_t alloc_size = actual_size - ALLOC_HEADER_SIZE;
+  fprintf(stderr, "2");
+
 
   //Task 1.2
   int index = (alloc_size / 8) - 1;
@@ -228,7 +231,7 @@ static inline header * allocate_object(size_t raw_size) {
   }
   header * freelist = &freelistSentinels[index];
 
-  fprintf(stderr, "1");
+  fprintf(stderr, "3");
 
   //Searches throught the freelist to find the first block that is greater than
   //or equal to alloc_size and breaks
