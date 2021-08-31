@@ -227,7 +227,7 @@ static inline header * allocate_object(size_t raw_size) {
 
   //Searches throught the freelist to find the first block that is greater than
   //or equal to alloc_size and breaks
-  for (int i = index; i < N_LISTS; i++;) {
+  for (int i = index; i < N_LISTS; i++) {
     while (freelist->next != NULL) {
       freelist = freelist->next;
 
