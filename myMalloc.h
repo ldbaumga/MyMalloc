@@ -12,7 +12,7 @@
 #endif
 
 #ifndef N_LISTS
- If not specified at compile time use the default number of free lists
+// If not specified at compile time use the default number of free lists
 #define N_LISTS 59
 #endif
 
