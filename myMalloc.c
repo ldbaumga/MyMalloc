@@ -196,66 +196,50 @@ static header * allocate_chunk(size_t size) {
  */
 static inline header * allocate_object(size_t raw_size) {
   // TODO implement allocation
-
-  //(void) raw_size;
-  //If the user requests 0 bytes, we return NULL
+  //Checks to see if raw_size is 0, returns null if true
   if (raw_size == 0) {
     return NULL;
   }
 
-  //If the raw size is less than the mininum allocation, we increase to the min
-  //allocation
-  if (raw_size < MIN_ALLOCATION) {
-    raw_size = MIN_ALLOCATION;
-  }
-
-  //Task 1.1
-  size_t total_size = (raw_size + ALLOC_HEADER_SIZE + 7) & ~ 0x7;
-
-  //If the requested size (rounded up) is less than the size of a header, we
-  //set it too the size of the header struct
+  //Calculates the total size needed and rounds to nearest 8 byte boundry
+  size_t total_size = (raw_size + 7) & ~ 0x7;
+  total_size += ALLOC_HEADER_SIZE;
+  //If the requsted size is less than headersize, use the headder size
   if (total_size < sizeof(header)) {
     total_size = sizeof(header);
   }
 
-  size_t alloc_size = total_size - ALLOC_HEADER_SIZE;
+  //Uses a helper function to calculate the index for the freelist
+  int index = free_list_index(total_size);
 
-
-  //Task 1.2
-  int index = (alloc_size / 8) - 1;
-  if (index > N_LISTS - 1) {
-    index = N_LISTS - 1;
-  }
-
-  //Searches throught the freelist to find the first block that is greater than
-  //or equal to alloc_size and breaks
-  header * freelist = NULL;
-  for (int i = index; i < N_LISTS; i++) {
+  //Itterate over the free list to find a big enjough chunk
+  header *  freelist = NULL;
+  for (int i  = index; i < N_LISTS; i++) {
     freelist = &freelistSentinels[i];
     if (freelist->next != freelist) {
       break;
     }
   }
 
-  //remove the chunk from the list
+  header * remainder = NULL;
+  if (total_size < ((N_LISTS - 1) * 8 + 1)) {
+    if (freelist->next == freelist) {
+      //TODO run out of memory
+    }
+
+  //Remove the chunk from the list
   header * h = freelist->next;
   freelist->next = h->next;
   h->next->prev = freelist;
 
-  //may need to change alloc_size
   size_t remaining_size = get_size(h) - total_size;
 
-
-  //Here we deal with the remaining size
+  //If there is no remainder or the remainder is small allocate it and  return
   if (remaining_size < sizeof(header)) {
-    //if the remaining size is too small to put back in the list, we allocate
-    //it
-
-    fprintf(stderr, "dd");
-
     set_state(freelist, ALLOCATED);
     return (header *) freelist->data;
   } else {
+    //Remainder must be inserted inot the freelist
     header * alloc_hdr = (header *) ((char *) h + remaining_size);
     set_size_and_state(alloc_hdr, total_size, ALLOCATED);
     alloc_hdr->left_size = remaining_size;
@@ -263,8 +247,9 @@ static inline header * allocate_object(size_t raw_size) {
     header * next = get_header_from_offset(alloc_hdr, get_size(alloc_hdr));
     next->left_size = get_size(alloc_hdr);
 
+    //Return the remainder to the freelist
     set_size(h, remaining_size);
-    int new_index = ((remaining_size - ALLOC_HEADER_SIZE)/8) - 1;
+    int new_index = free_list_index(remaining_size);
     freelist = &freelistSentinels[new_index];
     h->next = freelist->next;
     h->prev = freelist;
@@ -272,7 +257,12 @@ static inline header * allocate_object(size_t raw_size) {
     h->next->prev = h;
 
     return (header *) alloc_hdr->data;
+   }
+  } else {
+    //TODO when object is bigger than 512
+    return NULL;
   }
+
 }
 
 /**tab
