@@ -1,0 +1,7 @@
+using Vimdiff
+
+./tests/test_simpleX > actual.txt
+./tests/expected/test_simpleX > expected.txt
+vimdiff actual.txt expected.txt
+
+take out the header size before adding back into the freelist
