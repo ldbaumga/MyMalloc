@@ -315,7 +315,7 @@ static inline void deallocate_object(void * p) {
   if ((get_state(p_left) == ALLOCATED || get_state(p_left) == FENCEPOST)
     && (get_state(p_right) == ALLOCATED || get_state(p_right) == FENCEPOST)) {
 
-    int index = free_list_index(get_size(p_hdr));
+    int index = ((get_size(p_hdr) - ALLOC_HEADER_SIZE)/8)-1;
     header * list = &freelistSentinels[index];
     p_hdr->next = list->next;
     p_hdr->prev = list;
