@@ -355,7 +355,7 @@ static inline void deallocate_object(void * p) {
 
     //calculates the size of the new chunk and finds the index in the free list
     int size = get_size(p_right) + get_size(p_hdr);
-    int index = free_list_index(size);
+    int index = ((size - ALLOC_HEADER_SIZE)/8) -1;
 
     //deallocates the given header and updates the left chunks size
     set_state(p_hdr, UNALLOCATED);
