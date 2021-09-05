@@ -242,6 +242,7 @@ static inline header * allocate_object(size_t raw_size) {
 
   //If there is no remainder or the remainder is small allocate it and  return
   if (remaining_size < sizeof(header)) {
+    fprintf(stderr,"4.1");
     set_state(freelist, ALLOCATED);
     
 
