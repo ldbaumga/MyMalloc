@@ -217,7 +217,6 @@ static inline header * allocate_object(size_t raw_size) {
     total_size = sizeof(header);
   }
 
-  fprintf(stderr, "1");
 
   //Uses a helper function to calculate the index for the freelist
   int index = freelist_index(total_size);
@@ -230,8 +229,6 @@ static inline header * allocate_object(size_t raw_size) {
       break;
     }
   }
-
-  fprintf(stderr, "2");
 
   header * remainder = NULL;
   if (total_size < ((N_LISTS - 1) * 8 + 1)) {
@@ -246,20 +243,13 @@ static inline header * allocate_object(size_t raw_size) {
 
   size_t remaining_size = get_size(h) - total_size;
 
-  fprintf(stderr, "3");
-
   //If there is no remainder or the remainder is small allocate it and  return
   if (remaining_size < sizeof(header)) {
-    fprintf(stderr,"4.1");
     set_state(freelist, ALLOCATED);
-    
-
-    fprintf(stderr, "4");
 
     return (header *) freelist->data;
   } else {
 
-    fprintf(stderr, "5");
     //Remainder must be inserted inot the freelist
     header * alloc_hdr = (header *) ((char *) h + remaining_size);
     set_size_and_state(alloc_hdr, total_size, ALLOCATED);
@@ -270,16 +260,12 @@ static inline header * allocate_object(size_t raw_size) {
 
     //Return the remainder to the freelist
     set_size(h, remaining_size);
-    fprintf(stderr, "6");
     int new_index = freelist_index(remaining_size);
-    fprintf(stderr, "7");
     freelist = &freelistSentinels[new_index];
-    fprintf(stderr, "8");
     h->next = freelist->next;
     h->prev = freelist;
     freelist->next = h;
     h->next->prev = h;
-    fprintf(stderr, "9");
     return (header *) alloc_hdr->data;
    }
   } else {
