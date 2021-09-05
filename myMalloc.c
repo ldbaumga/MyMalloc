@@ -253,7 +253,23 @@ static inline header * allocate_object(size_t raw_size) {
     set_state(freelist, ALLOCATED);
     return (header *) freelist->data;
   } else {
+    header * alloc_hdr = (header *) ((char *) h + remaining_size);
+    set_size_and_state(alloc_hdr, alloc_size, ALLOCATED);
+    alloc_hdr->left_size = remaining_size;
+    set_size(h, get_size(h) - get_size(alloc_hdr));
+    header * next = get_header_from_offset(alloc_hdr, get_size(alloc_hdr));
+    next->left_size = get_size(alloc_hdr);
 
+    set_size(h, remaining_size);
+    int new_index = ((remaining_size - ALLOC_HEADER_SIZE)/8) - 1;
+    freelist = &freelistSentinels[new_index];
+    h->next = freelist->next;
+    h->prev = freelist;
+    freelist->next = h;
+    h->next->prev = h;
+
+    return (header *) alloc_hdr->data;
+  }
   }
 }
 
