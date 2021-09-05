@@ -245,12 +245,14 @@ static inline header * allocate_object(size_t raw_size) {
   //may need to change alloc_size
   size_t remaining_size = get_size(h) - actual_size;
 
-  fprintf(stderr, "ddd");
 
   //Here we deal with the remaining size
   if (remaining_size < sizeof(header)) {
     //if the remaining size is too small to put back in the list, we allocate
     //it
+
+    fprintf(stderr, "dd");
+
     set_state(freelist, ALLOCATED);
     return (header *) freelist->data;
   } else {
