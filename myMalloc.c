@@ -266,6 +266,7 @@ static inline header * allocate_object(size_t raw_size) {
     int new_index = ((remaining_size - ALLOC_HEADER_SIZE)/8)-1;
     fprintf(stderr, "7");
     freelist = &freelistSentinels[new_index];
+    fprintf(stderr, "8");
     h->next = freelist->next;
     h->prev = freelist;
     freelist->next = h;
