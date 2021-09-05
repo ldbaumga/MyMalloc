@@ -197,7 +197,7 @@ static header * allocate_chunk(size_t size) {
 static inline header * allocate_object(size_t raw_size) {
   // TODO implement allocation
 
-  (void) raw_size;
+  //(void) raw_size;
   //If the user requests 0 bytes, we return NULL
   if (raw_size == 0) {
     return NULL;
@@ -211,7 +211,7 @@ static inline header * allocate_object(size_t raw_size) {
 
   //Task 1.1
   size_t actual_size = raw_size + ALLOC_HEADER_SIZE + 7;
-  actual_size = actual_size & (-8);
+  actual_size = actual_size & (-7);
 
   //If the requested size (rounded up) is less than the size of a header, we
   //set it too the size of the header struct
@@ -227,38 +227,34 @@ static inline header * allocate_object(size_t raw_size) {
   if (index > N_LISTS - 1) {
     index = N_LISTS - 1;
   }
-  header * freelist = &freelistSentinels[index];
 
   //Searches throught the freelist to find the first block that is greater than
   //or equal to alloc_size and breaks
-  while (freelist->next != NULL) {
-    freelist = freelist->next;
-    index += 1;
-
-    fprintf(stderr, "1");
-
-    if (get_size(freelist) >= alloc_size) {
+  header * freelist = NULL;
+  for (int i = index; i < N_LISTS; i++) {
+    freelist = &freelistSentinels[i];
+    if (freelist->next != freelist) {
       break;
     }
   }
 
-  freelist = &freelistSentinels[index];
-  size_t freelist_size = get_size(freelist);
-  size_t remainder = freelist_size - alloc_size;
+  //remove the chunk from the list
+  header * h = freelist->next;
+  freelist->next = h->next;
+  h->next->prev = freelist;
 
-  if (freelist_size == alloc_size || remainder < sizeof(header)) {
-    //If the freelist block size is exactly the size we need, we simply
-    //allocate it and remove it from the freelist
+  //may need to change alloc_size
+  size_t remaining_size = get_size(h) - alloc_size;
+
+  //Here we deal with the remaining size
+  if (remaining_size < sizeof(header)) {
+    //if the remaining size is too small to put back in the list, we allocate
+    //it
     set_state(freelist, ALLOCATED);
-    freelist->prev->next = freelist->next;
-    freelist->next->prev = freelist->prev;
     return (header *) freelist->data;
   } else {
-    //Otherwise, we split the block
-  }
 
-  //assert(false);
-  //exit(1);
+  }
 }
 
 /**tab
