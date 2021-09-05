@@ -187,6 +187,14 @@ static header * allocate_chunk(size_t size) {
   return hdr;
 }
 
+static inline int freelist_index(size_t size) {
+  if (size >= (N_LISTS - 1) * 8 + 1) {
+    return N_LISTS -1;
+  } else {
+    return ((size - ALLOC_HEADER_SIZE) / 8) - 1;
+  }
+}
+
 /**
  * @brief Helper allocate an object given a raw request size from the user
  *
@@ -212,7 +220,7 @@ static inline header * allocate_object(size_t raw_size) {
   fprintf(stderr, "1");
 
   //Uses a helper function to calculate the index for the freelist
-  int index = ((total_size - ALLOC_HEADER_SIZE)/8)-1;
+  int index = freelist_index(total_size);
 
   //Itterate over the free list to find a big enjough chunk
   header *  freelist = NULL;
@@ -263,7 +271,7 @@ static inline header * allocate_object(size_t raw_size) {
     //Return the remainder to the freelist
     set_size(h, remaining_size);
     fprintf(stderr, "6");
-    int new_index = ((remaining_size - ALLOC_HEADER_SIZE)/8)-1;
+    int new_index = freelist_index(remaining_size);
     fprintf(stderr, "7");
     freelist = &freelistSentinels[new_index];
     fprintf(stderr, "8");
