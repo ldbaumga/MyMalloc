@@ -209,6 +209,8 @@ static inline header * allocate_object(size_t raw_size) {
     total_size = sizeof(header);
   }
 
+  fprintf(stderr, "1");
+
   //Uses a helper function to calculate the index for the freelist
   int index = ((total_size - ALLOC_HEADER_SIZE)/8)-1;
 
@@ -220,6 +222,8 @@ static inline header * allocate_object(size_t raw_size) {
       break;
     }
   }
+
+  fprintf(stderr, "2");
 
   header * remainder = NULL;
   if (total_size < ((N_LISTS - 1) * 8 + 1)) {
@@ -233,6 +237,8 @@ static inline header * allocate_object(size_t raw_size) {
   h->next->prev = freelist;
 
   size_t remaining_size = get_size(h) - total_size;
+
+  fprintf(stderr, "3");
 
   //If there is no remainder or the remainder is small allocate it and  return
   if (remaining_size < sizeof(header)) {
