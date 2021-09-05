@@ -300,11 +300,106 @@ static inline void deallocate_object(void * p) {
   }
 
   header * p_hdr = ptr_to_header(p);
-
-  //We could optionally check for a double free here
+  //Here we can check for a double free
+  if (get_state(p_hdr) == UNALLOCATED) {
+    fprintf(stderr, "%s", "Double Free Detected\nAssertion Failed!\n");
+    exit(1);
+    return;
+  }
 
   header * p_left = get_left_header(p_hdr);
   header * p_right = get_right_header(p_hdr);
+
+  //When both sizds of the current header are allocated we place the freed
+  //block back into the free list
+  if ((get_state(p_left) == ALLOCATED || get_state(p_left) == FENCEPOST)
+    && (get_state(p_right) == ALLOCATED || get_state(p_right) == FENCEPOST)) {
+
+    int index = free_list_index(get_size(p_hdr));
+    header * list = &freelistSentinels[index];
+    p_hdr->next = list->next;
+    p_hdr->prev = list;
+    list->next = p_hdr;
+    p_hdr->next->prev = p_hdr;
+    set_state(p_hdr, UNALLOCATED);
+    return;
+
+    //When the left chunk is free and the right is not, we coalles the left and
+    //the current block
+  } else if (get_state(p_left) == UNALLOCATED && (get_state(p_right) == ALLOCATED || get_state(p_right) == FENCEPOST)) {
+
+    //calculates the size of the new chunk and finds the index in the free list
+    int size = get_size(p_hdr) + get_size(p_left);
+    int index = free_list_index(size);
+
+    //deallocates the given header and updates the left chunks size
+    set_state(p_hdr, UNALLOCATED);
+    set_size(p_left, size);
+    p_right->left_size = size;
+
+    //removes the left from the freelsit
+    p_left->prev->next = p_left->next;
+    p_left->next->prev = p_left->prev;
+
+    //adds the new chunk into the freelist
+    header * list = &freelistSentinels[index];
+    p_left->next = list->next;
+    p_left->prev = list->prev;
+    list->next = p_left;
+    p_left->next->prev = p_left;
+    return;
+
+    //When the right chucnk is allocated
+  } else if ((get_state(p_left) == ALLOCATED || get_state(p_left) == FENCEPOST)
+        && get_state(p_right) == UNALLOCATED) {
+
+    //calculates the size of the new chunk and finds the index in the free list
+    int size = get_size(p_right) + get_size(p_hdr);
+    int index = free_list_index(size);
+
+    //deallocates the given header and updates the left chunks size
+    set_state(p_hdr, UNALLOCATED);
+    set_size(p_hdr, size);
+    get_right_header(p_right)->left_size = size;
+
+    //removes the left from the freelsit
+    p_hdr->prev->next = p_hdr->next;
+    p_hdr->next->prev = p_hdr->prev;
+
+    //adds the new chunk into the freelist
+    header * list = &freelistSentinels[index];
+    p_hdr->next = list->next;
+    p_hdr->prev = list->prev;
+    list->next = p_hdr;
+    p_hdr->next->prev = p_hdr;
+    return;
+
+    //When both sides are unallocated
+  } else if (get_state(p_left) == UNALLOCATED && get_state(p_right) == UNALLOCATED) {
+
+    //calculates the size of the new chunk and finds the index in the free list
+    int size = get_size(p_hdr) + get_size(p_left) + get_size(p_right);
+    int index = free_list_index(size);
+
+    //deallocates the given header and updates the left chunks size
+    set_state(p_hdr, UNALLOCATED);
+    set_size(p_left, size);
+    get_right_header(p_right)->left_size = size;
+
+    //removes the left from the freelsit
+    p_left->prev->next = p_left->next;
+    p_left->next->prev = p_left->prev;
+
+    //adds the new chunk into the freelist
+    header * list = &freelistSentinels[index];
+    p_left->next = list->next;
+    p_left->prev = list;
+    list->next = p_left;
+    p_left->next->prev = p_left;
+    return;
+  }
+
+
 }
 
 /**
