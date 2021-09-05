@@ -244,7 +244,7 @@ static inline header * allocate_object(size_t raw_size) {
   h->next->prev = freelist;
 
   //may need to change alloc_size
-  size_t remaining_size = get_size(h) - alloc_size;
+  size_t remaining_size = get_size(h) - actual_size;
 
   //Here we deal with the remaining size
   if (remaining_size < sizeof(header)) {
@@ -254,7 +254,7 @@ static inline header * allocate_object(size_t raw_size) {
     return (header *) freelist->data;
   } else {
     header * alloc_hdr = (header *) ((char *) h + remaining_size);
-    set_size_and_state(alloc_hdr, alloc_size, ALLOCATED);
+    set_size_and_state(alloc_hdr, actual_size, ALLOCATED);
     alloc_hdr->left_size = remaining_size;
     set_size(h, get_size(h) - get_size(alloc_hdr));
     header * next = get_header_from_offset(alloc_hdr, get_size(alloc_hdr));
