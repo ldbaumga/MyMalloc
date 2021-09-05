@@ -210,8 +210,7 @@ static inline header * allocate_object(size_t raw_size) {
   }
 
   //Task 1.1
-  size_t actual_size = raw_size + ALLOC_HEADER_SIZE + 7;
-  actual_size = actual_size & (-7);
+  size_t actual_size = (raw_size + ALLOC_HEADER_SIZE + 7) & ~ 0x7;
 
   //If the requested size (rounded up) is less than the size of a header, we
   //set it too the size of the header struct
@@ -245,6 +244,8 @@ static inline header * allocate_object(size_t raw_size) {
 
   //may need to change alloc_size
   size_t remaining_size = get_size(h) - actual_size;
+
+  fprintf(stderr, "ddd");
 
   //Here we deal with the remaining size
   if (remaining_size < sizeof(header)) {
