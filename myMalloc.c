@@ -290,9 +290,18 @@ static inline header * ptr_to_header(void * p) {
  */
 static inline void deallocate_object(void * p) {
   // TODO implement deallocation
-  (void) p;
-  assert(false);
-  exit(1);
+
+  //If p is null, do nothing
+  if (p == NULL) {
+    return;
+  }
+
+  header * p_hdr = ptr_to_header(p);
+
+  //We could optionally check for a double free here
+
+  header * p_left = get_left_header(p_hdr);
+  header * p_right = get_right_header(p_hdr);
 }
 
 /**
