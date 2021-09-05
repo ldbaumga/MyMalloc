@@ -210,7 +210,7 @@ static inline header * allocate_object(size_t raw_size) {
   }
 
   //Uses a helper function to calculate the index for the freelist
-  int index = free_list_index(total_size);
+  int index = ((total_size - ALLOC_HEADER_SIZE)/8)-1;
 
   //Itterate over the free list to find a big enjough chunk
   header *  freelist = NULL;
