@@ -270,7 +270,6 @@ static inline header * allocate_object(size_t raw_size) {
 
     return (header *) alloc_hdr->data;
   }
-  }
 }
 
 /**tab
