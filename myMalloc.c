@@ -250,6 +250,8 @@ static inline header * allocate_object(size_t raw_size) {
 
     return (header *) freelist->data;
   } else {
+
+    fprintf(stderr, "5");
     //Remainder must be inserted inot the freelist
     header * alloc_hdr = (header *) ((char *) h + remaining_size);
     set_size_and_state(alloc_hdr, total_size, ALLOCATED);
