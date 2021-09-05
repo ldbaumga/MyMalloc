@@ -270,7 +270,7 @@ static inline header * allocate_object(size_t raw_size) {
     h->prev = freelist;
     freelist->next = h;
     h->next->prev = h;
-
+    fprintf(stderr, "9");
     return (header *) alloc_hdr->data;
    }
   } else {
