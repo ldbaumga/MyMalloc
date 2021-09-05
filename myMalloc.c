@@ -210,15 +210,15 @@ static inline header * allocate_object(size_t raw_size) {
   }
 
   //Task 1.1
-  size_t actual_size = (raw_size + ALLOC_HEADER_SIZE + 7) & ~ 0x7;
+  size_t total_size = (raw_size + ALLOC_HEADER_SIZE + 7) & ~ 0x7;
 
   //If the requested size (rounded up) is less than the size of a header, we
   //set it too the size of the header struct
-  if (actual_size < sizeof(header)) {
-    actual_size = sizeof(header);
+  if (total_size < sizeof(header)) {
+    total_size = sizeof(header);
   }
 
-  size_t alloc_size = actual_size - ALLOC_HEADER_SIZE;
+  size_t alloc_size = total_size - ALLOC_HEADER_SIZE;
 
 
   //Task 1.2
@@ -243,7 +243,7 @@ static inline header * allocate_object(size_t raw_size) {
   h->next->prev = freelist;
 
   //may need to change alloc_size
-  size_t remaining_size = get_size(h) - actual_size;
+  size_t remaining_size = get_size(h) - total_size;
 
 
   //Here we deal with the remaining size
@@ -257,7 +257,7 @@ static inline header * allocate_object(size_t raw_size) {
     return (header *) freelist->data;
   } else {
     header * alloc_hdr = (header *) ((char *) h + remaining_size);
-    set_size_and_state(alloc_hdr, actual_size, ALLOCATED);
+    set_size_and_state(alloc_hdr, total_size, ALLOCATED);
     alloc_hdr->left_size = remaining_size;
     set_size(h, get_size(h) - get_size(alloc_hdr));
     header * next = get_header_from_offset(alloc_hdr, get_size(alloc_hdr));
