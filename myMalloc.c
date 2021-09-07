@@ -20,7 +20,15 @@
       exit(1);
     }
   }
-#else
+ get_state(p_right) == UNALLOCATED) {¬                                                    
+ 38 ¬                                                                                                   
+ 37     //calculates the size of the new chunk and finds the index in the free list¬                    
+ 36     int size = get_size(p_right) + get_size(p_hdr);¬                                                
+ 35     int index = ((size - ALLOC_HEADER_SIZE)/8) -1;¬                                                 
+ 34 ¬                                                                                                   
+ 33     //deallocates the given header and updates the left chunks size¬                                
+ 32     set_state(p_hdr, UNALLOCATED);¬                                                                 
+ 31     set_size(p_hd#else
   #include <assert.h>
 #endif
 
@@ -324,7 +332,15 @@ static inline void deallocate_object(void * p) {
     set_state(p_hdr, UNALLOCATED);
     return;
 
-    //When the left chunk is free and the right is not, we coalles the left and
+    //When the left  get_state(p_right) == UNALLOCATED) {¬                                                    
+ 38 ¬                                                                                                   
+ 37     //calculates the size of the new chunk and finds the index in the free list¬                    
+ 36     int size = get_size(p_right) + get_size(p_hdr);¬                                                
+ 35     int index = ((size - ALLOC_HEADER_SIZE)/8) -1;¬                                                 
+ 34 ¬                                                                                                   
+ 33     //deallocates the given header and updates the left chunks size¬                                
+ 32     set_state(p_hdr, UNALLOCATED);¬                                                                 
+ 31     set_size(p_hdchunk is free and the right is not, we coalles the left and
     //the current block
   } else if (get_state(p_left) == UNALLOCATED && (get_state(p_right) == ALLOCATED || get_state(p_right) == FENCEPOST)) {
 
