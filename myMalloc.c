@@ -20,15 +20,7 @@
       exit(1);
     }
   }
- get_state(p_right) == UNALLOCATED) {¬                                                    
- 38 ¬                                                                                                   
- 37     //calculates the size of the new chunk and finds the index in the free list¬                    
- 36     int size = get_size(p_right) + get_size(p_hdr);¬                                                
- 35     int index = ((size - ALLOC_HEADER_SIZE)/8) -1;¬                                                 
- 34 ¬                                                                                                   
- 33     //deallocates the given header and updates the left chunks size¬                                
- 32     set_state(p_hdr, UNALLOCATED);¬                                                                 
- 31     set_size(p_hd#else
+#else
   #include <assert.h>
 #endif
 

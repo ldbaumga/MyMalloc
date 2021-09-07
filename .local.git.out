@@ -1097,3 +1097,21 @@ Untracked files:
 nothing added to commit but untracked files present (use "git add" to track)
 M	myMalloc.c
 Your branch is up to date with 'origin/master'.
+[master 37e5d5c] Commit
+ Committer: Lucas Daniel Baumgartner <ldbaumga@escher03.cs.purdue.edu>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 2 files changed, 20 insertions(+), 2 deletions(-)
+M	.local.git.out
+M	myMalloc.c
+Your branch is up to date with 'origin/master'.
