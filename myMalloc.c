@@ -303,7 +303,7 @@ static inline void deallocate_object(void * p) {
   //Here we can check for a double free
   if (get_state(p_hdr) == UNALLOCATED) {
     fprintf(stderr, "%s", "Double Free Detected\nAssertion Failed!\n");
-    exit(1);
+    //exit(1);
     return;
   }
 
@@ -312,6 +312,8 @@ static inline void deallocate_object(void * p) {
 
   //When both sizds of the current header are allocated we place the freed
   //block back into the free list
+  //
+  //TODO IF THEN WILL HAVE PROBLEMS WITH FUTURE TEST CASES
   if ((get_state(p_left) == ALLOCATED || get_state(p_left) == FENCEPOST)
     && (get_state(p_right) == ALLOCATED || get_state(p_right) == FENCEPOST)) {
 
