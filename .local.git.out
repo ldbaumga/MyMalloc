@@ -1389,3 +1389,54 @@ M	tests/test_split
 M	tests/test_verify
 M	tests/test_very_large
 Your branch is up to date with 'origin/master'.
+[master 54ec87f] Commit
+ Committer: Lucas Daniel Baumgartner <ldbaumga@data.cs.purdue.edu>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 36 files changed, 666 insertions(+), 3 deletions(-)
+ create mode 100644 copymyMalloc.c
+ rewrite tests/test_all_lists (78%)
+ rewrite tests/test_coalesce_chunk_coalesce (71%)
+ rewrite tests/test_coalesce_chunk_insert (71%)
+ rewrite tests/test_corrupted_canary (74%)
+ rewrite tests/test_double_free (77%)
+ rewrite tests/test_exact (72%)
+ rewrite tests/test_free_both (77%)
+ rewrite tests/test_free_even (77%)
+ rewrite tests/test_free_insert (76%)
+ rewrite tests/test_free_left (77%)
+ rewrite tests/test_free_null (74%)
+ rewrite tests/test_free_odd (76%)
+ rewrite tests/test_free_right (77%)
+ rewrite tests/test_insert_chunk (71%)
+ rewrite tests/test_large (78%)
+ rewrite tests/test_locks (78%)
+ rewrite tests/test_malloc_large (77%)
+ rewrite tests/test_malloc_too_large (73%)
+ rewrite tests/test_malloc_zero (73%)
+ rewrite tests/test_multi_malloc (77%)
+ rewrite tests/test_out_of_ram (72%)
+ rewrite tests/test_random (75%)
+ rewrite tests/test_random_sizes (62%)
+ rewrite tests/test_simple0 (73%)
+ rewrite tests/test_simple1 (73%)
+ rewrite tests/test_simple2 (73%)
+ rewrite tests/test_simple3 (74%)
+ rewrite tests/test_simple4 (75%)
+ rewrite tests/test_simple5 (73%)
+ rewrite tests/test_simple6 (73%)
+ rewrite tests/test_split (77%)
+ rewrite tests/test_verify (77%)
+M	.local.git.out
+M	myMalloc.c
+Your branch is up to date with 'origin/master'.

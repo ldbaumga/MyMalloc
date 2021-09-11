@@ -248,7 +248,7 @@ static inline header * allocate_object(size_t raw_size) {
   if (remaining_size < sizeof(header)) {
 
     freelist->prev->next = freelist->next;
-    freelist->next->prev = frelist->prev;
+    freelist->next->prev = freelist->prev;
     freelist->next->left_size = get_size(freelist);
 
     set_state(freelist, ALLOCATED);
