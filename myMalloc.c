@@ -206,7 +206,7 @@ static inline header * allocate_object(size_t raw_size) {
   // TODO implement allocation
   //Checks to see if raw_size is 0, returns null if true
   if (raw_size == 0) {
-    raw_size = 1;
+    return NULL;
   }
 
   //Calculates the total size needed and rounds to nearest 8 byte boundry
@@ -293,7 +293,7 @@ static inline header * ptr_to_header(void * p) {
  */
 static inline void deallocate_object(void * p) {
   // TODO implement deallocation
-
+  /*
   //If p is null, do nothing
   if (p == NULL) {
     return;
@@ -402,7 +402,7 @@ static inline void deallocate_object(void * p) {
     return;
   }
 
-
+*/
 }
 
 /**
