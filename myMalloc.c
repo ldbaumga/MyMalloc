@@ -276,6 +276,7 @@ static inline header * allocate_object(size_t raw_size) {
 
     set_state(alloc_hdr, ALLOCATED);
     return alloc_hdr;
+    }
   } else {
     //TODO when object is bigger than 512
     //return NULL;
