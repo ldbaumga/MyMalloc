@@ -250,7 +250,7 @@ static inline header * allocate_object(size_t raw_size) {
 
     set_state(freelist, ALLOCATED);
 
-    return (header *) freelist->data;
+    return freelist;
   } else {
 
     freelist->prev->next = freelist->next;
