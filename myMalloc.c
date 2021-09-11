@@ -274,7 +274,7 @@ static inline header * allocate_object(size_t raw_size) {
     remaining->next->prev = freelist;
     remaining->next = freelist;
 
-    set_state(alloc_hdr, ALLOCATED)
+    set_state(alloc_hdr, ALLOCATED);
     return alloc_hdr;
   } else {
     //TODO when object is bigger than 512
