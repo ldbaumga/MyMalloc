@@ -206,7 +206,7 @@ static inline header * allocate_object(size_t raw_size) {
   // TODO implement allocation
   //Checks to see if raw_size is 0, returns null if true
   if (raw_size == 0) {
-    return NULL;
+    raw_size = 1;
   }
 
   //Calculates the total size needed and rounds to nearest 8 byte boundry
@@ -270,7 +270,7 @@ static inline header * allocate_object(size_t raw_size) {
    }
   } else {
     //TODO when object is bigger than 512
-    return NULL;
+    //return NULL;
   }
 
 }
@@ -303,7 +303,7 @@ static inline void deallocate_object(void * p) {
   //Here we can check for a double free
   if (get_state(p_hdr) == UNALLOCATED) {
     fprintf(stderr, "%s", "Double Free Detected\nAssertion Failed!\n");
-    //exit(1);
+    exit(1);
     return;
   }
 
@@ -317,7 +317,7 @@ static inline void deallocate_object(void * p) {
   if ((get_state(p_left) == ALLOCATED || get_state(p_left) == FENCEPOST)
     && (get_state(p_right) == ALLOCATED || get_state(p_right) == FENCEPOST)) {
 
-    int index = ((get_size(p_hdr) - ALLOC_HEADER_SIZE)/8)-1;
+    int index = freelist_index(get_size(p_hdr));
     header * list = &freelistSentinels[index];
     p_hdr->next = list->next;
     p_hdr->prev = list;
@@ -333,7 +333,7 @@ static inline void deallocate_object(void * p) {
 
     //calculates the size of the new chunk and finds the index in the free list
     int size = get_size(p_hdr) + get_size(p_left);
-    int index = ((size - ALLOC_HEADER_SIZE)/8) - 1;
+    int index = freelist_index(size);
 
     //deallocates the given header and updates the left chunks size
     set_state(p_hdr, UNALLOCATED);
@@ -358,7 +358,7 @@ static inline void deallocate_object(void * p) {
 
     //calculates the size of the new chunk and finds the index in the free list
     int size = get_size(p_right) + get_size(p_hdr);
-    int index = ((size - ALLOC_HEADER_SIZE)/8) -1;
+    int index = freelist_index(size);
 
     //deallocates the given header and updates the left chunks size
     set_state(p_hdr, UNALLOCATED);
@@ -382,7 +382,7 @@ static inline void deallocate_object(void * p) {
 
     //calculates the size of the new chunk and finds the index in the free list
     int size = get_size(p_hdr) + get_size(p_left) + get_size(p_right);
-    int index = ((size - ALLOC_HEADER_SIZE)/8)-1;
+    int index = freelist_index(size);
 
     //deallocates the given header and updates the left chunks size
     set_state(p_hdr, UNALLOCATED);
@@ -414,8 +414,8 @@ static inline void deallocate_object(void * p) {
 static inline header * detect_cycles() {
   for (int i = 0; i < N_LISTS; i++) {
     header * freelist = &freelistSentinels[i];
-    for (header * slow = freelist->next, * fast = freelist->next->next; 
-         fast != freelist; 
+    for (header * slow = freelist->next, * fast = freelist->next->next;
+         fast != freelist;
          slow = slow->next, fast = fast->next->next) {
       if (slow == fast) {
         return slow;
@@ -445,7 +445,7 @@ static inline header * verify_pointers() {
 }
 
 /**
- * @brief Verify the structure of the free list is correct by checkin for 
+ * @brief Verify the structure of the free list is correct by checkin for
  *        cycles and misdirected pointers
  *
  * @return true if the list is valid
