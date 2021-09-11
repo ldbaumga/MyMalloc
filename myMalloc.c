@@ -237,12 +237,9 @@ static inline header * allocate_object(size_t raw_size) {
       //TODO run out of memory
     }
 
-  //Remove the chunk from the list
-  header * h = freelist->next;
-  freelist->next = h->next;
-  h->next->prev = freelist;
+    freelist=freelist->next;
 
-  size_t remaining_size = get_size(h) - total_size;
+  size_t remaining_size = get_size(freelist) - total_size;
 
   //If there is no remainder or the remainder is small allocate it and  return
   if (remaining_size <= sizeof(header)) {
