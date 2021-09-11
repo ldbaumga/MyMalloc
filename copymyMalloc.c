@@ -228,7 +228,6 @@ static inline header * allocate_object(size_t raw_size) {
     if (freelist->next != freelist) {
       break;
     }
-
   }
 
   header * remainder = NULL;
@@ -246,11 +245,6 @@ static inline header * allocate_object(size_t raw_size) {
 
   //If there is no remainder or the remainder is small allocate it and  return
   if (remaining_size < sizeof(header)) {
-
-    freelist->prev->next = freelist->next;
-    freelist->next->prev = frelist->prev;
-    freelist->next->left_size = get_size(freelist);
-
     set_state(freelist, ALLOCATED);
 
     return (header *) freelist->data;
