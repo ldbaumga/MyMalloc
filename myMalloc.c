@@ -245,7 +245,7 @@ static inline header * allocate_object(size_t raw_size) {
   size_t remaining_size = get_size(h) - total_size;
 
   //If there is no remainder or the remainder is small allocate it and  return
-  if (remaining_size < sizeof(header)) {
+  if (remaining_size <= sizeof(header)) {
     //remove it from the freelist
     freelist->prev->next = freelist->next;
     freelist->next->prev = freelist->prev;
