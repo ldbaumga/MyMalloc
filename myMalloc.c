@@ -223,6 +223,7 @@ static inline header * allocate_object(size_t raw_size) {
 
   //Itterate over the free list to find a big enjough chunk
   header *  freelist = NULL;
+  header * freelistSentinel = NULL;
   for (int i  = index; i < N_LISTS; i++) {
     freelistSentinel = &freelistSentinels[i];
     if (freelistSentinel->next != freelistSentinel) {
