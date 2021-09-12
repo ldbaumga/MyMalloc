@@ -204,7 +204,7 @@ static inline int freelist_index(size_t size) {
  */
 static inline header * allocate_object(size_t raw_size) {
   // TODO implement allocation
-  /*
+
   //Checks to see if raw_size is 0, returns null if true
   if (raw_size == 0) {
     return NULL;
@@ -245,10 +245,12 @@ static inline header * allocate_object(size_t raw_size) {
   size_t remaining_size = get_size(h) - total_size;
 
   //If there is no remainder or the remainder is small allocate it and  return
-  if (remaining_size < sizeof(header)) {
-    set_state(freelist, ALLOCATED);
+  if (get_size(h) == total_size) {
+    
+    h->next->left_size = get_size(h);
+    set_state(h, ALLOCATED);
 
-    return (header *) freelist->data;
+    return (header *) h->data;
   } else {
 
     //Remainder must be inserted inot the freelist
@@ -273,7 +275,7 @@ static inline header * allocate_object(size_t raw_size) {
     //TODO when object is bigger than 512
     //return NULL;
   }
-*/
+
 }
 
 /**tab
