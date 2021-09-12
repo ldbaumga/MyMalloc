@@ -226,7 +226,7 @@ static inline header * allocate_object(size_t raw_size) {
   header * freelistSentinel = NULL;
   for (int i  = index; i < N_LISTS; i++) {
     freelistSentinel = &freelistSentinels[i];
-    if (freelistSentinel->next != freelistSentinel) {
+    if (freelistSentinel->next == freelistSentinel) {
       continue;
     }
 
