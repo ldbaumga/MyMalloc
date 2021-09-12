@@ -223,56 +223,61 @@ static inline header * allocate_object(size_t raw_size) {
 
   //Itterate over the free list to find a big enjough chunk
   header *  freelist = NULL;
+  header * freelistSentinel = NULL;
   for (int i  = index; i < N_LISTS; i++) {
-    freelist = &freelistSentinels[i];
-    if (freelist->next != freelist) {
-      break;
-    }
-  }
-
-  header * remainder = NULL;
-  if (total_size < ((N_LISTS - 1) * 8 + 1)) {
-    if (freelist->next == freelist) {
-      //TODO run out of memory
+    freelistSentinel = &freelistSentinels[i];
+    if (freelistSentinel->next == freelistSentinel) {
+      continue;
     }
 
-  //Remove the chunk from the list
-  header * h = freelist->next;
-  freelist->next = h->next;
-  h->next->prev = freelist;
+    header * freelist = freelistSentinel->next;
 
-  size_t remaining_size = get_size(h) - total_size;
+    while(freelist->next != NULL) {
+      if(get_size(freelist) == total_size) {
+        //If there is no remainder or the remainder is small allocate it and  return
+      //remove it from the freelist
+      freelist->prev->next = freelist->next;
+      freelist->next->prev = freelist->prev;
+      freelist->next->left_size = get_size(freelist);
 
-  //If there is no remainder or the remainder is small allocate it and  return
-  if (remaining_size < sizeof(header)) {
-    set_state(freelist, ALLOCATED);
+      set_state(freelist, ALLOCATED);
 
-    return (header *) freelist->data;
-  } else {
+      return (header *) freelist->data;
+    } else if(get_size(freelist) > total_size) {
+      if(get_size(freelist) - total_size > sizeof(header)) {
 
-    //Remainder must be inserted inot the freelist
-    header * alloc_hdr = (header *) ((char *) h + remaining_size);
-    set_size_and_state(alloc_hdr, total_size, ALLOCATED);
-    alloc_hdr->left_size = remaining_size;
-    set_size(h, get_size(h) - get_size(alloc_hdr));
-    header * next = get_header_from_offset(alloc_hdr, get_size(alloc_hdr));
-    next->left_size = get_size(alloc_hdr);
+      freelist->prev->next = freelist->next;
+      freelist->next->prev = freelist->prev;
 
-    //Return the remainder to the freelist
-    set_size(h, remaining_size);
-    int new_index = freelist_index(remaining_size);
-    freelist = &freelistSentinels[new_index];
-    h->next = freelist->next;
-    h->prev = freelist;
-    freelist->next = h;
-    h->next->prev = h;
-    return (header *) alloc_hdr->data;
-   }
-  } else {
-    //TODO when object is bigger than 512
-    //return NULL;
+      //Remainder must be inserted inot the freelist
+      header * alloc_hdr = get_header_from_offset(freelist, get_size(freelist)-total_size);
+      set_size_and_state(alloc_hdr, total_size, ALLOCATED);
+      alloc_hdr->left_size = get_size(freelist) - total_size;
+      get_right_header(freelist)->left_size = total_size;
+      set_size(freelist, get_size(freelist) - total_size);
+      size_t remainder = get_size(freelist) - ALLOC_HEADER_SIZE;
+      int rem_index = freelist_index(remainder);
+
+      header * remaining = &freelistSentinels[rem_index];
+      freelist->prev = remaining;
+      freelist->next = remaining->next;
+      remaining->next->prev = freelist;
+      remaining->next = freelist;
+
+      set_state(alloc_hdr, ALLOCATED);
+      return alloc_hdr;
+    } else {
+      freelist->prev->next = freelist->next;
+      freelist->next->prev = freelist->prev;
+      
+      get_right_header(freelist)->left_size = get_size(freelist);
+      set_state(freelist, ALLOCATED);
+      return freelist;
+    }
+    }
+  freelist = freelist->next;
+    }
   }
-
 }
 
 /**tab
