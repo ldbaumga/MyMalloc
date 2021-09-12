@@ -2379,3 +2379,50 @@ M	tests/test_split
 M	tests/test_verify
 M	tests/test_very_large
 Your branch is up to date with 'origin/master'.
+[master fb9d6b6] Commit
+ Committer: Lucas Daniel Baumgartner <ldbaumga@data.cs.purdue.edu>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 35 files changed, 84 insertions(+), 598 deletions(-)
+ rename copymyMalloc.c => WORKINGmyMalloc.c (98%)
+ delete mode 100644 copyv2myMalloc.c
+ rewrite tests/test_all_lists (64%)
+ rewrite tests/test_coalesce_chunk_coalesce (60%)
+ rewrite tests/test_corrupted_canary (64%)
+ rewrite tests/test_exact (63%)
+ rewrite tests/test_free_both (64%)
+ rewrite tests/test_free_even (68%)
+ rewrite tests/test_free_insert (65%)
+ rewrite tests/test_free_left (65%)
+ rewrite tests/test_free_null (61%)
+ rewrite tests/test_free_odd (68%)
+ rewrite tests/test_free_right (69%)
+ rewrite tests/test_insert_chunk (63%)
+ rewrite tests/test_large (65%)
+ rewrite tests/test_locks (64%)
+ rewrite tests/test_malloc_large (68%)
+ rewrite tests/test_malloc_too_large (62%)
+ rewrite tests/test_malloc_zero (60%)
+ rewrite tests/test_multi_malloc (68%)
+ rewrite tests/test_out_of_ram (60%)
+ rewrite tests/test_simple0 (60%)
+ rewrite tests/test_simple1 (61%)
+ rewrite tests/test_simple2 (64%)
+ rewrite tests/test_simple3 (65%)
+ rewrite tests/test_simple4 (61%)
+ rewrite tests/test_simple5 (61%)
+ rewrite tests/test_simple6 (61%)
+ rewrite tests/test_split (64%)
+ rewrite tests/test_verify (65%)
+M	.local.git.out
+Your branch is up to date with 'origin/master'.
