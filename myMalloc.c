@@ -242,7 +242,7 @@ static inline header * allocate_object(size_t raw_size) {
 
       set_state(freelist, ALLOCATED);
 
-      return freelist->data;
+      return (header *) freelist->data;
     } else if(get_size(freelist) > total_size) {
       if(get_size(freelist) - total_size > sizeof(header)) {
 
