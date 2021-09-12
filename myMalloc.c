@@ -204,6 +204,7 @@ static inline int freelist_index(size_t size) {
  */
 static inline header * allocate_object(size_t raw_size) {
   // TODO implement allocation
+  /*
   //Checks to see if raw_size is 0, returns null if true
   if (raw_size == 0) {
     return NULL;
@@ -272,7 +273,7 @@ static inline header * allocate_object(size_t raw_size) {
     //TODO when object is bigger than 512
     //return NULL;
   }
-
+*/
 }
 
 /**tab
