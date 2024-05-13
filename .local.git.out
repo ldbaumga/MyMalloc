@@ -2598,3 +2598,79 @@ M	tests/test_verify
 M	tests/test_very_large
 M	utils/difftest.sh
 Your branch is up to date with 'origin/master'.
+[master e44858d] Commit
+ 72 files changed, 72 insertions(+)
+ mode change 100755 => 100644 examples/composite_ex
+ mode change 100755 => 100644 examples/constructor_ex
+ mode change 100755 => 100644 runtest.py
+ mode change 100755 => 100644 tests/expected/test_all_lists
+ mode change 100755 => 100644 tests/expected/test_coalesce_chunk_coalesce
+ mode change 100755 => 100644 tests/expected/test_coalesce_chunk_insert
+ mode change 100755 => 100644 tests/expected/test_corrupted_canary
+ mode change 100755 => 100644 tests/expected/test_double_free
+ mode change 100755 => 100644 tests/expected/test_exact
+ mode change 100755 => 100644 tests/expected/test_free_both
+ mode change 100755 => 100644 tests/expected/test_free_even
+ mode change 100755 => 100644 tests/expected/test_free_insert
+ mode change 100755 => 100644 tests/expected/test_free_left
+ mode change 100755 => 100644 tests/expected/test_free_null
+ mode change 100755 => 100644 tests/expected/test_free_odd
+ mode change 100755 => 100644 tests/expected/test_free_right
+ mode change 100755 => 100644 tests/expected/test_insert_chunk
+ mode change 100755 => 100644 tests/expected/test_large
+ mode change 100755 => 100644 tests/expected/test_locks
+ mode change 100755 => 100644 tests/expected/test_m32
+ mode change 100755 => 100644 tests/expected/test_malloc_large
+ mode change 100755 => 100644 tests/expected/test_malloc_too_large
+ mode change 100755 => 100644 tests/expected/test_malloc_zero
+ mode change 100755 => 100644 tests/expected/test_multi_malloc
+ mode change 100755 => 100644 tests/expected/test_out_of_ram
+ mode change 100755 => 100644 tests/expected/test_random
+ mode change 100755 => 100644 tests/expected/test_random_sizes
+ mode change 100755 => 100644 tests/expected/test_simple0
+ mode change 100755 => 100644 tests/expected/test_simple1
+ mode change 100755 => 100644 tests/expected/test_simple2
+ mode change 100755 => 100644 tests/expected/test_simple3
+ mode change 100755 => 100644 tests/expected/test_simple4
+ mode change 100755 => 100644 tests/expected/test_simple5
+ mode change 100755 => 100644 tests/expected/test_simple6
+ mode change 100755 => 100644 tests/expected/test_split
+ mode change 100755 => 100644 tests/expected/test_verify
+ mode change 100755 => 100644 tests/expected/test_very_large
+ mode change 100755 => 100644 tests/test_all_lists
+ mode change 100755 => 100644 tests/test_coalesce_chunk_coalesce
+ mode change 100755 => 100644 tests/test_coalesce_chunk_insert
+ mode change 100755 => 100644 tests/test_corrupted_canary
+ mode change 100755 => 100644 tests/test_double_free
+ mode change 100755 => 100644 tests/test_exact
+ mode change 100755 => 100644 tests/test_free_both
+ mode change 100755 => 100644 tests/test_free_even
+ mode change 100755 => 100644 tests/test_free_insert
+ mode change 100755 => 100644 tests/test_free_left
+ mode change 100755 => 100644 tests/test_free_null
+ mode change 100755 => 100644 tests/test_free_odd
+ mode change 100755 => 100644 tests/test_free_right
+ mode change 100755 => 100644 tests/test_insert_chunk
+ mode change 100755 => 100644 tests/test_large
+ mode change 100755 => 100644 tests/test_locks
+ mode change 100755 => 100644 tests/test_malloc_large
+ mode change 100755 => 100644 tests/test_malloc_too_large
+ mode change 100755 => 100644 tests/test_malloc_zero
+ mode change 100755 => 100644 tests/test_multi_malloc
+ mode change 100755 => 100644 tests/test_out_of_ram
+ mode change 100755 => 100644 tests/test_random
+ mode change 100755 => 100644 tests/test_random_sizes
+ mode change 100755 => 100644 tests/test_simple0
+ mode change 100755 => 100644 tests/test_simple1
+ mode change 100755 => 100644 tests/test_simple2
+ mode change 100755 => 100644 tests/test_simple3
+ mode change 100755 => 100644 tests/test_simple4
+ mode change 100755 => 100644 tests/test_simple5
+ mode change 100755 => 100644 tests/test_simple6
+ mode change 100755 => 100644 tests/test_split
+ mode change 100755 => 100644 tests/test_verify
+ mode change 100755 => 100644 tests/test_very_large
+ mode change 100755 => 100644 utils/difftest.sh
+M	.local.git.out
+Your branch is ahead of 'origin/master' by 1 commit.
+  (use "git push" to publish your local commits)
